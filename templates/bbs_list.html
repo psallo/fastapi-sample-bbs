@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}BOARD{% endblock %}
+
+{% block content %}
+<center>
+    <img src="/static/img/board-banner.jpg" alt="banner image" style="border-radius: 10px">
+    <p></p>
+    <a href="/" style="text-decoration: none; color: inherit; cursor: pointer;">
+        <Button class="btn btn-secondary" style="width: 80px">Home</Button>
+    </a>
+    <a href="/chart" style="text-decoration: none; color: inherit; cursor: pointer;">
+        <Button class="btn btn-secondary" style="width: 80px">Chart</Button>
+    </a>
+    <a href="/bbs" style="text-decoration: none; color: inherit; cursor: pointer;">
+        <Button class="btn btn-secondary" style="width: 80px">Board</Button>
+    </a>
+    <hr>
+    <h3>BOARD</h3>
+    <hr>
+    <div class="bbs_toolbar">
+        <form action="/bbs_search" method="get" class="search-form" role="search">
+            <input type="text"
+                   class="form-control"
+                   name="q"
+                   placeholder="Search title"
+            >
+            <button type="submit" class="btn btn-outline-secondary">Search</button>
+        </form>
+        <a href="/bbs_list" class="btn btn-secondary" style="margin-left: 2em; width: 70px">List</a>
+        <a href="/bbs_insert" class="btn btn-secondary" style="margin-left: 2em; width: 70px">New Post</a>
+    </div>
+    <table style="width: 800px">
+        <thead>
+            <td style="font-weight: bold; width: 50px; text-align: center; border-bottom: 1px solid lightgray">No</td>
+            <td style="font-weight: bold; width: 100px; text-align: center; border-bottom: 1px solid lightgray">Tilte</td>
+            <td style="font-weight: bold; width: 100px; text-align: center; border-bottom: 1px solid lightgray">Writer</td>
+            <td style="font-weight: bold; width: 150px; text-align: center; border-bottom: 1px solid lightgray">Content</td>
+            <td style="font-weight: bold; width: 100px; text-align: center; border-bottom: 1px solid lightgray">Created</td>
+            <td style="font-weight: bold; width: 100px; text-align: center; border-bottom: 1px solid lightgray">Updated</td>
+            <td style="font-weight: bold; width: 200px; text-align: center; border-bottom: 1px solid lightgray">Actions</td>
+        </thead>
+        <tbody>
+            {% for row in rows %}
+                <tr style="border-bottom: 0.1px solid lightgray; align-items: flex-end">
+                    <td style="text-align: center">{{ row.no }}</td>
+                    <td style="text-align: center">
+                        <a href="/bbs_read/{{row.no}}">{{ row.title }}</a>
+                    </td>
+                    <td style="text-align: center">{{ row.writer }}</td>
+                    <td style="text-align: center">{{ row.content }}</td>
+                    <td style="text-align: center">{{ row.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                    <td style="text-align: center">{{ row.updated_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                    <td style="text-align: center; display: flex; justify-content: space-around; align-items: center; height: 50px">
+                        <a href="/bbs_update/{{row.no}}"><Button class="btn btn-success btn-sm" style="width: 80px">Update</Button></a>
+                        <form action="/bbs_delete" method="post" onsubmit="return confirm('삭제하시겠습니까?');">
+                            <!-- CSRF를 쓰는 경우 hidden 필드 추가 -->
+                            <input name="no" value="{{row.no}}" type="hidden" />
+                            {# <input type="hidden" name="csrf_token" value="{{ csrf_token }}"> #}
+                            <button type="submit" class="btn btn-sm btn-outline-danger" style="width: 80px">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</center>
+{% endblock %}

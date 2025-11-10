@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}HOME{% endblock %}
+
+{% block content %}
+<center>
+    <img src="/static/img/banner.jpg" alt="banner image" style="border-radius: 10px">
+    <p></p>
+    <a href="/" style="text-decoration: none; color: inherit; cursor: pointer;">
+        <Button class="btn btn-secondary" style="width: 80px">Home</Button>
+    </a>
+    <a href="/chart" style="text-decoration: none; color: inherit; cursor: pointer;">
+        <Button class="btn btn-secondary" style="width: 80px">Chart</Button>
+    </a>
+    <a href="/bbs" style="text-decoration: none; color: inherit; cursor: pointer;">
+        <Button class="btn btn-secondary" style="width: 80px">Board</Button>
+    </a>
+<!--    <a href="/addr" style="text-decoration: none; color: inherit; cursor: pointer;">-->
+<!--        <Button class="btn btn-secondary">addr 연습</Button>-->
+<!--    </a>-->
+    <hr>
+</center>
+{% endblock %}

@@ -1,0 +1,25 @@
+body {
+    color: white;
+    background-color: black;
+}
+
+.bbs_toolbar {
+    width: 800px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1.5em;
+}
+.search-form {
+    display: flex;
+    gap: 1em;
+    flex: 1;
+}
+a {
+    all: unset;
+    text-decoration: none;
+    color: inherit;
+    cursor: auto;
+}
+a:hover {
+    text-decoration: underline;
+}

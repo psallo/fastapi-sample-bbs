@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}BOARD{% endblock %}
+
+{% block content %}
+<center>
+    <img src="/static/img/board-banner.jpg" alt="banner image" style="border-radius: 10px">
+    <p></p>
+    <a href="/" style="text-decoration: none; color: inherit; cursor: pointer;">
+        <Button class="btn btn-secondary" style="width: 80px">Home</Button>
+    </a>
+    <a href="/chart" style="text-decoration: none; color: inherit; cursor: pointer;">
+        <Button class="btn btn-secondary" style="width: 80px">Chart</Button>
+    </a>
+    <a href="/bbs_list" style="text-decoration: none; color: inherit; cursor: pointer;">
+        <Button class="btn btn-secondary" style="width: 80px">List</Button>
+    </a>
+    <hr>
+    <h3>BOARD</h3>
+    <hr>
+    <p></p>
+    <img src="/static/img/bbc.jpg" alt="BlackBerry Classic" style="width: 400px"><p></p>
+    <h5>Curiosity piqued? Smash that 'List' button!</h5>
+    <h5>But beware...</h5>
+</center>
+{% endblock %}
