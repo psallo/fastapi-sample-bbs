@@ -1,6 +1,130 @@
 {% extends "base.html" %}
-{% block title %}BOARD{% endblock %}
+{% block title %}CHART{% endblock %}
+{% block scripts %}
+<script type="text/javascript">
+    google.charts.load('current', {'packages': ['corechart']});
+    google.charts.load('current', {'packages': ['gauge']});
+    google.charts.load('current', {'packages': ['bar']});
+    google.charts.setOnLoadCallback(drawChart);
+    google.charts.setOnLoadCallback(count);
+    google.charts.setOnLoadCallback(drawChart2);
+    google.charts.setOnLoadCallback(drawStuff);
+    google.charts.setOnLoadCallback(ordersAll);
 
+    async function drawChart() {
+        await axios.get('/chart/avg').then(res => {
+            avg_data = res.data.avg
+            console.log((avg_data))
+            total = []
+            total.push(['customers', 'avg'])
+
+            for (i of avg_data) {
+                total.push([String(i.customers), i.avg])
+            }
+            var data = google.visualization.arrayToDataTable(total);
+
+            var options = {
+                title: 'Customers Avg'
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+            chart.draw(data, options);
+
+        })
+    }
+
+    async function count() {
+        axios.get('/chart/count').then(res => {
+            <!-- alert(res.data.count) -->  // ← 비권장: 대신 console.log 또는 // alert(...) 사용 권장
+            // DOM 요소 #count에 "전체 회원수 : N명" 텍스트 출력
+            document.getElementById('count_chart').innerHTML = "전체 회원수 : " + res.data.count + "명";
+        });
+    }
+
+    async function drawChart2() {
+        await axios.get('/chart/all').then(res => {
+            total2 = []
+            total2.push(['customers', 'revenue'])
+
+            for (j of res.data.all) {
+                total2.push([String(j.customers), j.revenue])
+            }
+
+            var data2 = google.visualization.arrayToDataTable(total2);
+
+            var options2 = {
+                width: 400, height: 120,
+                redFrom: 90, redTo: 100,
+                yellowFrom: 75, yellowTo: 90,
+                minorTicks: 5
+            };
+
+            var chart2 = new google.visualization.Gauge(document.getElementById('chart_div'));
+
+            chart2.draw(data2, options2);
+
+            setInterval(function () {
+                data2.setValue(0, 1, 40 + Math.round(60 * Math.random()));
+                chart2.draw(data2, options2);
+            }, 13000);
+            setInterval(function () {
+                data2.setValue(1, 1, 40 + Math.round(60 * Math.random()));
+                chart2.draw(data2, options2);
+            }, 5000);
+            setInterval(function () {
+                data2.setValue(2, 1, 60 + Math.round(20 * Math.random()));
+                chart2.draw(data2, options2);
+            }, 26000);
+        })
+    }
+
+    async function drawStuff() {
+        await axios.get('/chart/top').then(res => {
+            console.log(res.data.top)
+            total3 = []
+            total3.push(['customers', 'orders', 'revenue'])
+
+            for (x of res.data.top) {
+                total3.push([String(x.customers), x.orders, x.revenue])
+            }
+            console.log(total3)
+
+            var data3 = new google.visualization.arrayToDataTable(total3);
+
+            var options3 = {
+                width: 800,
+                chart: {
+                    title: 'Top 5 Customers by Sales ',
+                    subtitle: 'Top 5 customer $ revenue'
+                },
+                bars: 'horizontal', // Required for Material Bar Charts.
+                series: {
+                    1: {axis: 'distance'}, // Bind series 0 to an axis named 'distance'.
+                    0: {axis: 'brightness'} // Bind series 1 to an axis named 'brightness'.
+                },
+                axes: {
+                    x: {
+                        distance: {label: 'Revenue'}, // Bottom x-axis.
+                        brightness: {side: 'top', label: 'Orders'} // Top x-axis.
+                    }
+                }
+            };
+
+            var chart3 = new google.charts.Bar(document.getElementById('dual_x_div'));
+            chart3.draw(data3, options3);
+
+        })
+    };
+
+    async function ordersAll() {
+        await axios.get('/chart/orders_all').then(res => {
+            console.log((res.data))
+            document.getElementById('orders_all').innerHTML = "총 판매량 : " + res.data.orders.orders + "건";
+        });
+    }
+</script>
+{% endblock %}
 {% block content %}
 <center>
     <img src="/static/img/board-banner.jpg" alt="banner image" style="border-radius: 10px">
@@ -17,6 +141,11 @@
     <hr>
     <h3>CHART</h3>
     <hr>
-
+    <p></p>
+    <div id="count_chart" style="font-size: 2em; font-weight: bold; width: 700px; height: 60px;"></div>
+    <div id="piechart" style="width: 700px; height: 400px;"></div>
+    <div id="chart_div" style="width: 700px; height: 120px;"></div>
+    <div id="orders_all" style="font-size: 2em; font-weight: bold; width: 700px; height: 60px;"></div>
+    <div id="dual_x_div" style="width: 900px; height: 500px;"></div>
 </center>
 {% endblock %}

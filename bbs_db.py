@@ -15,7 +15,7 @@ def bbs_insert(data):
                             port=3307,
                             user='root',
                             password='1234',
-                            db='shop2',
+                            database='shop2',
                             cursorclass=DictCursor
                             )
         cursor = con.cursor()
@@ -44,7 +44,7 @@ def read_one(no):
                             port=3307,
                             user='root',
                             password='1234',
-                            db='shop2',
+                            database='shop2',
                             cursorclass=DictCursor
                             )
         cursor = con.cursor()
@@ -114,7 +114,7 @@ def update(data):
                             port=3307,
                             user='root',
                             password='1234',
-                            db='shop2',
+                            database='shop2',
                             cursorclass=DictCursor
                             )
         cursor = con.cursor()
@@ -143,7 +143,7 @@ def delete(data):
                             port=3307,
                             user='root',
                             password='1234',
-                            db='shop2',
+                            database='shop2',
                             cursorclass=DictCursor
                             )
         cursor = con.cursor()
@@ -172,7 +172,7 @@ def bbs_search(q):
                             port=3307,
                             user='root',
                             password='1234',
-                            db='shop2',
+                            database='shop2',
                             cursorclass=DictCursor
                             )
         cursor = con.cursor()

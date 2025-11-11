@@ -4,6 +4,7 @@ from starlette.responses import HTMLResponse, RedirectResponse
 from fastapi import FastAPI, Form
 from starlette.staticfiles import StaticFiles
 import bbs_db as db
+import chart_db as ch
 
 app = FastAPI()
 
@@ -77,10 +78,54 @@ def delete(req: Request, no: int = Form(...)):
 
 @app.get("/bbs_search")
 def bbs_search(req: Request, q: str):
-    print("서버에서 받은 q값>> ",q)
+    print("서버에서 받은 q값>> ", q)
     rows = db.bbs_search(q)
     return templates.TemplateResponse("bbs_list.html", {"request": req, "rows": rows})
+
 
 @app.get("/chart")
 def chart(req: Request):
     return templates.TemplateResponse("chart.html", {"request": req})
+
+
+@app.get("/chart/count")
+def chart_count(request: Request):
+    count = ch.read_count()
+    print("router --------")
+    print(count)
+    return count;
+
+
+@app.get("/chart/avg")
+def chart_avg(request: Request):
+    avg = ch.read_avg()
+    print("router --------")
+    print(avg)
+    data = {"avg": avg}
+    return data;
+
+
+@app.get("/chart/all")
+def chart_all(request: Request):
+    all = ch.read_all()
+    print("router --------")
+    print(all)
+    data = {"all": all}
+    return data;
+
+
+@app.get("/chart/top")
+def chart_top(request: Request):
+    top = ch.read_top()
+    print("router --------")
+    print(top)
+    data = {"top": top}
+    return data;
+
+@app.get("/chart/orders_all")
+def chart_orders_all(request: Request):
+    orders = ch.read_orders_all()
+    print("router --------")
+    print(orders)
+    data = {"orders": orders}
+    return data;
